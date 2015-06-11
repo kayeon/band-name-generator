@@ -5,7 +5,7 @@ $(function() {
     event.preventDefault();
     var userAdjective = $('#user-adjective').val();
     $.post('/adjective', {word: userAdjective}, function(response) {
-      var confirm = response.message + " We saved: <em>" + response.confirm + "</em>";
+      var confirm = response.message + " <em>" + response.confirm + "</em>";
       $('#adjective-res').html(confirm);
     })
   })

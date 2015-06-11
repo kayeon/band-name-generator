@@ -3,6 +3,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
+var getRandomWord = require('./lib/getRandomWord');
+var Adjective = require('./lib/adjective');
+
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -10,20 +13,6 @@ app.use(express.static(__dirname + '/app/'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-var Adjective = function() {
-  this.sleepy = true;
-  this.fuzzy = true;
-  this.cranky = true;
-  this.soporific = true;
-  this.lazy = true;
-  this.penultimate = true;
-  this.geodesic = true;
-  this.superb = true;
-  this.tasty = true;
-  this.intense = true;
-  this.magnificent = true;
-  this.eloquent = true;
-};
 var adjective = new Adjective();
 
 var Verb = function() {
@@ -54,16 +43,21 @@ var Noun = function() {
 };
 var noun = new Noun();
 
-function getRandomWord (object) {
-  var propArray = Object.keys(object);
-  var randomProp = propArray[Math.floor(Math.random() * propArray.length)];
-  return {word: randomProp};
+function postWord(word, wordObject) {
+  var msg;
+  if (wordObject.hasOwnProperty(word)) {
+    msg = "we already have your awesome word: ";
+  } else {
+    wordObject[word] = true;
+    msg = "we saved the cool world: ";
+  }
+  console.log(wordObject);
+  return {message: msg, confirm: word};
 }
 
+
 app.post('/adjective', function(req, res) {
-  console.log(req.body.word);
-  adjective[req.body.word] = true;
-  res.json({message: "Ya did it!", confirm: req.body.word})
+  res.json(postWord(req.body.word, adjective));
 });
 
 app.get('/adjective', function(req, res) {
