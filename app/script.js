@@ -1,12 +1,30 @@
 'use strict';
 
 $(function() {
-  $('form').on('submit', function(event) {
+  $('#adjectiveForm').on('submit', function(event) {
     event.preventDefault();
     var userAdjective = $('#user-adjective').val();
     $.post('/adjective', {word: userAdjective}, function(response) {
       var confirm = response.message + " <em>" + response.confirm + "</em>";
-      $('#adjective-res').html(confirm);
+      $('#responseMessage').html(confirm);
+    })
+  })
+
+  $('#nounForm').on('submit', function(event) {
+    event.preventDefault();
+    var userNoun = $('#user-noun').val();
+    $.post('/noun', {word: userNoun}, function(response) {
+      var confirm = response.message + " <em>" + response.confirm + "</em>";
+      $('#responseMessage').html(confirm);
+    })
+  })
+
+  $('#verbForm').on('submit', function(event) {
+    event.preventDefault();
+    var userVerb = $('#user-verb').val();
+    $.post('/verb', {word: userVerb}, function(response) {
+      var confirm = response.message + " <em>" + response.confirm + "</em>";
+      $('#responseMessage').html(confirm);
     })
   })
 
